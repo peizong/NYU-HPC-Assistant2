@@ -8,6 +8,7 @@ import pickle
 import faiss
 import os.path
 from openai import OpenAI
+from portkey_ai import PORTKEY_GATEWAY_URL, createHeaders #pei
 
 # Configuration Constants
 DEFAULT_EMBEDDING_MODEL = "jinaai/jina-embeddings-v3"
@@ -18,7 +19,7 @@ DEFAULT_SEARCH_RESULTS = 5
 CHECKPOINT_SAVE_FREQUENCY = 5  # Save checkpoint every N iterations
 
 # System prompt for the LLM
-SYSTEM_PROMPT = """You are a helpful assistant specializing in NYU's High Performance Computing.
+SYSTEM_PROMPT = """You are a helpful assistant specializing in NYU's High Performance Computing. 
 First evaluate if the provided context contains relevant information for the question:
 - If the context is relevant, prioritize this NYU-specific information in your response
 - If the context is irrelevant or only tangentially related, rely on your general knowledge instead
@@ -27,18 +28,25 @@ Supplement your responses with general knowledge about HPC concepts, best practi
 Always ensure your responses are accurate and aligned with NYU's HPC environment."""
 
 class FaissEmbedder:
-    def __init__(self, rag_data_file, index_file=DEFAULT_INDEX_FILE, checkpoint_file=None, openai_client=None): # Added openai_client parameter
+    def __init__(self, rag_data_file, index_file=DEFAULT_INDEX_FILE, checkpoint_file=None):
         self.rag_data_file = rag_data_file
         self.index_file = index_file
         # Store checkpoint in same directory as index file
         self.checkpoint_file = checkpoint_file or os.path.join(os.path.dirname(index_file), DEFAULT_CHECKPOINT_SUFFIX)
         self.model = SentenceTransformer(DEFAULT_EMBEDDING_MODEL, trust_remote_code=True)
         self.dimension = self.model.get_sentence_embedding_dimension()
-        if openai_client: # Use provided client if available
-            self.openai_client = openai_client
-        else:
-            self.openai_client = OpenAI() # Default client if none provided
+        #self.openai_client = OpenAI() # original
+        self.openai_client = OpenAI(
+            api_key="xxx", #"OPENAI_API_KEY", # defaults to os.environ.get("OPENAI_API_KEY")
+            base_url="https://ai-gateway.apps.cloud.rt.nyu.edu/v1", #PORTKEY_GATEWAY_URL,
+            default_headers=createHeaders(
+            #provider="openai",
+            api_key= "8gTMTBfxZ9zzXHp/ZTcbUhPo9+81", #os.environ.get("PORTKEY_API_KEY"), #"PORTKEY_API_KEY", # defaults to os.environ.get("PORTKEY_API_KEY"),
+            virtual_key= "openai-nyu-it-d-5b382a" #os.environ.get("VIRTUAL_KEY_VALUE") #if you want provider key on gateway instead of client
+                                          )
+        )
 
+        
     def load_checkpoint(self):
         try:
             with open(self.checkpoint_file, 'r') as f:
@@ -58,7 +66,7 @@ class FaissEmbedder:
         df = pd.read_csv(self.rag_data_file)
         checkpoint = self.load_checkpoint()
         start_index = checkpoint['last_processed_index'] + 1
-
+        
         # If we have a partial index, load it
         if start_index > 0 and os.path.exists(self.index_file):
             with open(self.index_file, 'rb') as f:
@@ -71,14 +79,14 @@ class FaissEmbedder:
 
         try:
             # Use enumerate to keep track of absolute position in DataFrame
-            for idx, (_, row) in tqdm(enumerate(df.iloc[start_index:].iterrows(), start=start_index),
+            for idx, (_, row) in tqdm(enumerate(df.iloc[start_index:].iterrows(), start=start_index), 
                                     total=len(df) - start_index,  # Adjust total for correct progress bar
                                     initial=start_index,
                                     desc="Embedding and inserting"):
                 # Skip if chunk is empty or just whitespace
                 if not row['chunk'] or not str(row['chunk']).strip():
                     continue
-
+                    
                 embedding = self.model.encode(row['chunk'])
                 index.add(np.array([embedding]))
                 metadata.append({
@@ -86,7 +94,7 @@ class FaissEmbedder:
                     'chunk_id': row['chunk_id'],
                     'chunk': row['chunk']
                 })
-
+                
                 # Save checkpoint periodically
                 if idx % 5 == 0:
                     self.save_checkpoint(idx)
@@ -135,13 +143,13 @@ class FaissEmbedder:
     def generate_answer(self, query, k=DEFAULT_SEARCH_RESULTS):
         results = self.search(query, k=k)
         context = "\n".join([result['metadata']['chunk'] for result in results])
-
+        
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}"}
         ]
-
-        stream = self.openai_client.chat.completions.create( # Using self.openai_client
+        
+        stream = self.openai_client.chat.completions.create(
             model=DEFAULT_LLM_MODEL,
             messages=messages,
             stream=True,
