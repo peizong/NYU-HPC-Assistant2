@@ -54,7 +54,9 @@ class JinaEmbedder:
 class FaissEmbedder:
     def __init__(self, rag_output, index_file=None):
         self.df = pd.read_csv(rag_output)
-        self.embedder = JinaEmbedder(os.getenv("JINA_API_KEY"))
+        #changed by pei, the following two lines
+        JINA_API_KEY="jina_c6d3e63fe0884464bb72164724116982xmhBfH6x8jQPsPpB7l6FHRmY4Ygj"
+        self.embedder = JinaEmbedder(JINA_API_KEY) #(os.getenv("JINA_API_KEY"))
         #self.openai_client = OpenAI()
         # #changed by Pei#######################
         # self.openai_client = OpenAI(
