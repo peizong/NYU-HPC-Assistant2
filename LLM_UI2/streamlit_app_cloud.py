@@ -244,7 +244,7 @@ Always ensure your responses are accurate and aligned with NYU's HPC environment
             stream = st.session_state.embedder.openai_client.chat.completions.create(
                 model=MODEL_NAME,
                 messages=messages,
-                #stream=True, #changed by pei
+                stream=True, #changed by pei
             )
             
             #Danyl's original code
@@ -255,7 +255,7 @@ Always ensure your responses are accurate and aligned with NYU's HPC environment
             
             # message_placeholder.markdown(full_response)
 
-            stream=[stream]
+            #stream=[stream]
             for chunk in stream:
                 if chunk.choices[0].message.content is not None:
                     full_response += chunk.choices[0].message.content
