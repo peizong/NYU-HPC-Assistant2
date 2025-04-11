@@ -54,9 +54,7 @@ class JinaEmbedder:
 class FaissEmbedder:
     def __init__(self, rag_output, index_file=None):
         self.df = pd.read_csv(rag_output)
-        #changed by pei, the following two lines
-        JINA_API_KEY="jina_c6d3e63fe0884464bb72164724116982xmhBfH6x8jQPsPpB7l6FHRmY4Ygj"
-        self.embedder = JinaEmbedder(JINA_API_KEY) #(os.getenv("JINA_API_KEY"))
+        self.embedder = JinaEmbedder(os.getenv("JINA_API_KEY"))
         #self.openai_client = OpenAI()
         # #changed by Pei#######################
         # self.openai_client = OpenAI(
@@ -244,17 +242,24 @@ Always ensure your responses are accurate and aligned with NYU's HPC environment
             
             # Stream the response
             stream = st.session_state.embedder.openai_client.chat.completions.create(
-            #stream = st.session_state.embedder.openai_client.chat.completions.create(
                 model=MODEL_NAME,
                 messages=messages,
-                stream=True,
+                #stream=True, #changed by pei
             )
-
-            for chunk in stream:
-                if chunk.choices[0].delta.content is not None:
-                    full_response += chunk.choices[0].delta.content
-                    message_placeholder.markdown(full_response + "▌")
             
+            #Danyl's original code
+            # for chunk in stream:
+            #     if chunk.choices[0].delta.content is not None:
+            #         full_response += chunk.choices[0].delta.content
+            #         message_placeholder.markdown(full_response + "▌")
+            
+            # message_placeholder.markdown(full_response)
+
+            stream=[stream]
+            for chunk in stream:
+                if chunk.choices[0].message.content is not None:
+                    full_response += chunk.choices[0].message.content
+                    message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
         
         st.session_state.messages.append({"role": "assistant", "content": full_response})
