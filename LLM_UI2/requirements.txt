@@ -6,10 +6,10 @@ selenium
 trafilatura
 torch
 sentence-transformers
-faiss-cpu
+faiss-cpu==1.7.4
 openai
 urllib3
-numpy
+numpy==2.0
 einops
 streamlit
 portkey-ai
