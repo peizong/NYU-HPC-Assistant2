@@ -54,33 +54,19 @@ class JinaEmbedder:
 class FaissEmbedder:
     def __init__(self, rag_output, index_file=None):
         self.df = pd.read_csv(rag_output)
-        #self.embedder = JinaEmbedder(os.getenv("JINA_API_KEY"))
-        JINA_API_KEY="jina_c6d3e63fe0884464bb72164724116982xmhBfH6x8jQPsPpB7l6FHRmY4Ygj"
-        self.embedder = JinaEmbedder(JINA_API_KEY) #os.getenv("JINA_API_KEY"))
+        self.embedder = JinaEmbedder(os.getenv("JINA_API_KEY"))
         #self.openai_client = OpenAI()
         # #changed by Pei#######################
-        # self.openai_client = OpenAI(
-        #     #api_key="OPENAI_API_KEY", # defaults to os.environ.get("OPENAI_API_KEY")
-        #     base_url="https://ai-gateway.apps.cloud.rt.nyu.edu/v1/", #PORTKEY_GATEWAY_URL,
-        #     default_headers=createHeaders(
-        #     provider="openai",
-        #     api_key= os.environ.get("PORTKEY_API_KEY"), #"PORTKEY_API_KEY", # defaults to os.environ.get("PORTKEY_API_KEY"),
-        #     virtual_key= os.environ.get("VIRTUAL_KEY_VALUE") #if you want provider key on gateway instead of client
-        #                                   )
-        # )
-        # self.openai_client = OpenAI(
-        #     api_key="xxx", #"OPENAI_API_KEY", # defaults to os.environ.get("OPENAI_API_KEY")
-        #     base_url="https://ai-gateway.apps.cloud.rt.nyu.edu/v1", #PORTKEY_GATEWAY_URL,
-        #     default_headers=createHeaders(
-        #     #provider="openai",
-        #     api_key= "8gTMTBfxZ9zzXHp/ZTcbUhPo9+81", #os.environ.get("PORTKEY_API_KEY"), #"PORTKEY_API_KEY", # defaults to os.environ.get("PORTKEY_API_KEY"),
-        #     virtual_key= "openai-nyu-it-d-5b382a" #os.environ.get("VIRTUAL_KEY_VALUE") #if you want provider key on gateway instead of client
-        #                                   )
-        # )
-        key2="Z0LhEpgERvT0SM3d1PpSA4GssQY_ZUbAGhYjL62PFoTH2t1tYPz3G4VQXgT3BlbkFJKewoneC5uneko_PNPK2NxtBfOvmzZ_6DTKdDwL7LGAD7eANOF16m_39fHmjp7Tp5Dd5blf5yQA"
         self.openai_client = OpenAI(
-             api_key="sk-proj-mVrWA_0keM57Amy-"+key2
+            api_key="xxx", # defaults to os.environ.get("OPENAI_API_KEY")
+            base_url="https://ai-gateway.apps.cloud.rt.nyu.edu/v1", #PORTKEY_GATEWAY_URL,
+            default_headers=createHeaders(
+            provider="openai",
+            api_key= os.environ.get("PORTKEY_API_KEY"), #"PORTKEY_API_KEY", # defaults to os.environ.get("PORTKEY_API_KEY"),
+            virtual_key= os.environ.get("VIRTUAL_KEY_VALUE") #if you want provider key on gateway instead of client
+                                          )
         )
+        
         # #changed by Pei#######################
         
         # Initialize index
@@ -254,19 +240,19 @@ Always ensure your responses are accurate and aligned with NYU's HPC environment
             )
             
             #Danyl's original code
-            for chunk in stream:
-                if chunk.choices[0].delta.content is not None:
-                    full_response += chunk.choices[0].delta.content
-                    message_placeholder.markdown(full_response + "▌")
-            
-            message_placeholder.markdown(full_response)
-
-            #stream=[stream]
             # for chunk in stream:
-            #     if chunk.choices[0].message.content is not None:
-            #         full_response += chunk.choices[0].message.content
+            #     if chunk.choices[0].delta.content is not None:
+            #         full_response += chunk.choices[0].delta.content
             #         message_placeholder.markdown(full_response + "▌")
+            
             # message_placeholder.markdown(full_response)
+
+            stream=[stream]
+            for chunk in stream:
+                if chunk.choices[0].message.content is not None:
+                    full_response += chunk.choices[0].message.content
+                    message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
         
         st.session_state.messages.append({"role": "assistant", "content": full_response})
 
