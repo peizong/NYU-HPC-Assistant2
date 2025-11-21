@@ -14,15 +14,28 @@ or better for the specific versions,
 
 `pip install -r requirements-specific.txt`
 
-# start the chatbot
+# set up the environment for API KEYs
 
-Before start the chatbot, first import the API KEYs,
+The API KEYs for foundation language models must be exported first. These keys are needed in both preparing and starting the chatbot.
+
+To import the API KEYs,
 
 `export JINA_API_KEY=xxx`
 
 `export OPENAI_API_KEY=xxx` (if use portkey API the format is different)
 
-After it, then start the chatbot,
+
+# generate data files for the chatbot
+
+This step can be skipped if the model is constructed. Otherwise, use the following command to generate data
+
+`python main.py`
+
+Since this step takes, better put it in a script and submit it as a slurm job.
+
+# start the chatbot
+
+After it, then start the chatbot with this command,
 
 `python -m streamlit run --server.port 8080 streamlit_app.py`
 
