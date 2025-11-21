@@ -5,13 +5,17 @@ This is a repository for NYU HPC chatbot.
 ## create a conda environment
 
 `conda create -n chatbot-py310 python==3.10`
+
 `conda activate chatbot-py310`
+
 `pip install -r requirements.txt`
 
 or better for the specific versions,
+
 `pip install -r requirements-specific.txt`
 
 `export JINA_API_KEY=xxx`
+
 `export OPENAI_API_KEY=xxx` (if use portkey API the format is different)
 
 ## start the chatbot
