@@ -31,6 +31,15 @@ or the cloud version where files are stored in cloud (e.g., AWS, GCP, etc),
 `python -m streamlit run --server.port 8080 streamlit_app.py`
 
 ## some notes
+Packages is critical
+(my NYU MacBook)
+conda create -n chatbot2 python==3.10
+need numpy<=2.0:
+pip install "numpy<2"
+
+different versions of Python, FAISS, etc. serious affect the functionality of the code. How to control the verion of code? Prepare a requirement file.
+
+tf-keras
 
 Faiss related issues, a popular one due to using different faiss.swigfaiss_avx512 or faiss.swigfaiss (TypeError: IndexFlat.search() missing 3 required positional arguments: 'k', 'distances', and 'labels’)
 Solution is to uninstall the old packages and use the standard one:
