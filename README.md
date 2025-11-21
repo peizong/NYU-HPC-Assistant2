@@ -14,11 +14,16 @@ or better for the specific versions,
 
 `pip install -r requirements-specific.txt`
 
+## start the chatbot
+
+Before start the chatbot, first import the API KEYs,
+
 `export JINA_API_KEY=xxx`
 
 `export OPENAI_API_KEY=xxx` (if use portkey API the format is different)
 
-## start the chatbot
+After it, then start the chatbot,
+
 `python -m streamlit run --server.port 8080 streamlit_app.py`
 
 or the cloud version where files are stored in cloud (e.g., AWS, GCP, etc),
