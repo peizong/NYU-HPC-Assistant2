@@ -10,6 +10,11 @@ import os.path
 from openai import OpenAI
 from portkey_ai import PORTKEY_GATEWAY_URL, createHeaders #pei
 
+# Avoid issues related to faiss======
+import sys
+sys.modules['faiss.swigfaiss_avx2'] = faiss
+sys.modules['faiss.swigfaiss_avx512'] = faiss
+
 # Configuration Constants
 DEFAULT_EMBEDDING_MODEL = "jinaai/jina-embeddings-v3"
 DEFAULT_LLM_MODEL = "gpt-4o-mini" # THIS IS NOT THE MODEL USED IN THE STREAMLIT APP
