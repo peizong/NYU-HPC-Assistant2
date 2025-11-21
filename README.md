@@ -2,7 +2,7 @@ This is a repository for NYU HPC chatbot.
 (latest version for tests; NYU-HPC-Assistant1 supports a chatbot outside NYU; NYU-HPC-Assistant3 supports a chatbot inside NYU)
 
 
-## create a conda environment
+# create a conda environment
 
 `conda create -n chatbot-py310 python==3.10`
 
@@ -14,7 +14,7 @@ or better for the specific versions,
 
 `pip install -r requirements-specific.txt`
 
-## start the chatbot
+# start the chatbot
 
 Before start the chatbot, first import the API KEYs,
 
@@ -74,9 +74,9 @@ Tunneling from compute node, localhost
 (i) first, start a short srun job;
 
 (ii) then open a new terminal and try the following:
-# On your local machine
+### On your local machine
 ssh -L 8080:localhost:8080 your_netid@login.hpc.nyu.edu
-# Then, from inside login node:
+### Then, from inside login node:
 ssh -L 8080:localhost:8080 node123
 
 (iii) After this, log in to the node 123 and start the application app.py
