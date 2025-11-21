@@ -3,7 +3,7 @@ import os
 from core.faisembedder import FaissEmbedder
 
 # Configuration Variables
-MODEL_NAME = "gpt-4o"  # OpenAI model to use
+MODEL_NAME = "gpt-4o-mini"  # OpenAI model to use
 PAGE_TITLE = "NYU HPC Assistant"
 PAGE_ICON = "🤖"
 WELCOME_MESSAGE = "Ask any questions about NYU's High Performance Computing resources!"
