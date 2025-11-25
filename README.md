@@ -105,8 +105,7 @@ ssh -L 8080:localhost:8080 node123
 
 # upload local files to a GitHub repo
 
-==========================================
-#set up steps
+set up steps
 
 0 ininitialize and generate a .git/ folder, which is used to connect with github
 
@@ -117,20 +116,26 @@ ssh -L 8080:localhost:8080 node123
 `git@github.com:peizong/NYU-HPC-Assistantxx.git`
 
 2 connect this empy repository with local file
+
 `git remote add origin git@github.com:peizong/NYU-HPC-Assistantx.git`
+
 `git push -u origin main`
 
 3 generate a key-like authorization
-`gh auth login(need to install gh: brew install gh)
+
+`gh auth login` (need to install gh: brew install gh)
 
 4 github push files
 
 `git add sth`
+
 `git commit -m "First Commit"`
+
 `git remote add origin git@github.com:peizong/NYU-HPC-Assistantxx.git`
+
 `git branch -M main`
+
 `git push -u origin main`
-==========================================
 
 # host the chatbot in cloud (e.g., OpenShift)
 
