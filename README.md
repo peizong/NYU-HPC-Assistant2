@@ -108,15 +108,25 @@ ssh -L 8080:localhost:8080 node123
 clean steps to set up Red Hat OpenShift
 
   1 open https://console.cloud.rt.nyu.edu/, choose “developer” view, choose “Import from Git”
+  
   2 Git Repo URL: https://github.com/peizong/xxx.git
+  
   3 Show advanced Git options/Context dir: LLM_UI
+  
   4 General/name: hpc-chatbot3 -> chatbot
+  
   5 Show advanced Build option/Environment variables (build and runtime)
+  
    JINA_API_KEY               jina_xxx
+   
    PORTKEY_API_KEY      xxx
+   
    VIRTUAL_KEY_VALUE  openai-nyu-it-d-xxx
+   
   6  Deploy/Resource type: Deployment
+  
   #7 Show advanced Routing options/Hostname: hoc-chatbot3 -> chatbot3.apps.cloud.rt.nyu.edu -> chatbot.apps.cloud.rt.nyu.edu
+  
   8 Create
 
 possible reasons for issues: 
