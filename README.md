@@ -102,3 +102,24 @@ ssh -L 8080:localhost:8080 your_netid@login.hpc.nyu.edu
 ssh -L 8080:localhost:8080 node123
 
 (iii) After this, log in to the node 123 and start the application app.py
+
+# host the chatbot in cloud (e.g., OpenShift)
+
+clean steps to set up Red Hat OpenShift
+
+  1 open https://console.cloud.rt.nyu.edu/, choose “developer” view, choose “Import from Git”
+  2 Git Repo URL: https://github.com/peizong/xxx.git
+  3 Show advanced Git options/Context dir: LLM_UI
+  4 General/name: hpc-chatbot3 -> chatbot
+  5 Show advanced Build option/Environment variables (build and runtime)
+   JINA_API_KEY               jina_xxx
+   PORTKEY_API_KEY      xxx
+   VIRTUAL_KEY_VALUE  openai-nyu-it-d-xxx
+  6  Deploy/Resource type: Deployment
+  #7 Show advanced Routing options/Hostname: hoc-chatbot3 -> chatbot3.apps.cloud.rt.nyu.edu -> chatbot.apps.cloud.rt.nyu.edu
+  8 Create
+
+possible reasons for issues: 
+(1) missing three parameter in a faiss function: numpy version, faiss version, force install faiss, 
+(2) no output: API KEY, the different output of port key and open AI key;
+(3) when building  is slow, add cpus and memory
