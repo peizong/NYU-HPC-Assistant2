@@ -103,6 +103,35 @@ ssh -L 8080:localhost:8080 node123
 
 (iii) After this, log in to the node 123 and start the application app.py
 
+# upload local files to a GitHub repo
+
+==========================================
+#set up steps
+
+0 ininitialize and generate a .git/ folder, which is used to connect with github
+
+`git init -b main`
+
+1 create an empty repository and get its name
+
+`git@github.com:peizong/NYU-HPC-Assistantxx.git`
+
+2 connect this empy repository with local file
+`git remote add origin git@github.com:peizong/NYU-HPC-Assistantx.git`
+`git push -u origin main`
+
+3 generate a key-like authorization
+`gh auth login(need to install gh: brew install gh)
+
+4 github push files
+
+`git add sth`
+`git commit -m "First Commit"`
+`git remote add origin git@github.com:peizong/NYU-HPC-Assistantxx.git`
+`git branch -M main`
+`git push -u origin main`
+==========================================
+
 # host the chatbot in cloud (e.g., OpenShift)
 
 clean steps to set up Red Hat OpenShift
