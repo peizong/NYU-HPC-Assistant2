@@ -107,6 +107,12 @@ ssh -L 8080:localhost:8080 node123
 
 clean steps to set up Red Hat OpenShift
 
+  0 in the folder LLM_UI, create a ".s2i/bin" folder and "run" file and put the following line in the run file:
+
+  APP_PORT=${APP_PORT:-"8080"}
+  
+  streamlit run --server.port ${APP_PORT} streamlit_app_cloud.py
+
   1 open https://console.cloud.rt.nyu.edu/, choose “developer” view, choose “Import from Git”
   
   2 Git Repo URL: https://github.com/peizong/xxx.git
